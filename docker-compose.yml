@@ -1,0 +1,18 @@
+services:
+    db:
+        image: mysql:8.0
+        container_name: taskhub_db
+        restart: unless-stopped
+        environment:
+            MYSQL_ROOT_PASSWORD: supersecure
+            MYSQL_DATABASE: taskhub
+            MYSQL_USER: devdias
+            MYSQL_PASSWORD: supersecure
+        ports:
+            - "3306:3306"
+        volumes:
+            - dbdata:/var/lib/mysql
+
+volumes:
+    dbdata:
+
