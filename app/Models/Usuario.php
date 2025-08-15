@@ -9,6 +9,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
  * Class Usuario
@@ -27,10 +28,25 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class Usuario extends Model
+class Usuario extends Model implements JWTSubject
 {
 	protected $table = 'usuarios';
-	public $timestamps = false;
+	public $timestamps = ['atualizado_em', true];
+
+
+	public function getJWTIdentifier()
+	{
+		return $this->getKey();
+	}
+
+	public function getJWTCustomClaims()
+	{
+		return [
+			'nome' => $this->nome,
+			'email' => $this->email,
+			'papel' => $this->papel ?? 'membro',
+		];
+	}
 
 	protected $casts = [
 		'criado_em' => 'datetime',
